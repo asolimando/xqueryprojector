@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!-- DTD to write simple stories
+     Made by Daniel K. Schneider / TECFA / University of Geneva
+     VERSION 1.0
+     30/10/2003
+-->
+
+
+<!ELEMENT STORY (title, context, problem, goal, THREADS, moral, INFOS)>
+<!ATTLIST STORY xmlns:xlink CDATA #FIXED "http://www.w3.org/1999/xlink">
+
+<!ELEMENT THREADS (EPISODE+)>
+<!ELEMENT EPISODE (subgoal, ATTEMPT+, result) >
+<!ELEMENT ATTEMPT (action | EPISODE) >
+<!ELEMENT INFOS ( ( date | author | a )* ) >
+
+<!ELEMENT title (#PCDATA) >
+<!ELEMENT context (#PCDATA) >
+<!ELEMENT problem (#PCDATA) >
+<!ELEMENT goal (#PCDATA) >
+<!ELEMENT subgoal (#PCDATA) >
+<!ELEMENT result (#PCDATA) >
+<!ELEMENT moral (#PCDATA) >
+<!ELEMENT action (#PCDATA) >
+<!ELEMENT date (#PCDATA) >
+<!ELEMENT author (#PCDATA) >
+
+<!ELEMENT a (#PCDATA)>
+<!ATTLIST a
+     xlink:href CDATA #REQUIRED
+     xlink:type CDATA #FIXED "simple"
+>

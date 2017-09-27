@@ -1,0 +1,3 @@
+let $auction := doc("auction.xml") return
+for $x in $auction/site//text/bold return
+rename node $x as "emph"

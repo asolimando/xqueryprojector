@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+	<xs:element name="functions">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element minOccurs="0" maxOccurs="unbounded" ref="function"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+  
+	<xs:element name="function">
+		<xs:complexType>		
+			<xs:sequence>
+				<xs:element minOccurs="1" maxOccurs="unbounded" ref="parameter"/>
+			</xs:sequence>
+			<xs:attributeGroup ref="functionAttributes"/>
+		</xs:complexType>
+	</xs:element>
+		
+	<xs:element name="parameter">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="modifier"/>
+			</xs:sequence>
+			<xs:attributeGroup ref="parameterAttributes"/>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="modifier" type="modifierType"/>
+	
+	<xs:simpleType name="modifierType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="NONE"/>
+			<xs:enumeration value="STAR"/>
+			<xs:enumeration value="OPTIONAL"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:attributeGroup name="functionAttributes"> 
+		<xs:attribute name="name" use="required" type="xs:string"/>
+		<xs:attribute name="num_param" use="required" type="xs:integer"/>
+	</xs:attributeGroup>
+	
+	<xs:attributeGroup name="parameterAttributes"> 
+		<xs:attribute name="fixed_return" use="required" type="xs:boolean"/>
+	</xs:attributeGroup>
+	
+</xs:schema>

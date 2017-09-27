@@ -1,0 +1,9 @@
+com.sun.xml.xsom
+com.sun.xml.xsom.impl
+com.sun.xml.xsom.impl.parser
+com.sun.xml.xsom.impl.parser.state
+com.sun.xml.xsom.impl.scd
+com.sun.xml.xsom.impl.util
+com.sun.xml.xsom.parser
+com.sun.xml.xsom.util
+com.sun.xml.xsom.visitor
