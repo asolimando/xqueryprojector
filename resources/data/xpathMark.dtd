@@ -1,0 +1,21 @@
+<!ELEMENT benchmark (document*,query*)>
+<!ELEMENT document (#PCDATA)>
+<!ELEMENT query (type,description,syntax,answer)>
+<!ELEMENT type (#PCDATA)>
+<!ELEMENT description (#PCDATA)>
+<!ELEMENT syntax (#PCDATA)>
+<!ELEMENT answer (#PCDATA)>
+
+<!ATTLIST benchmark targets CDATA #REQUIRED
+				   language CDATA #REQUIRED
+				   authors CDATA #REQUIRED>
+<!ATTLIST document id ID #REQUIRED>
+<!ATTLIST query id ID #REQUIRED
+against IDREF #REQUIRED>
+
+
+
+
+
+
+

@@ -1,0 +1,6 @@
+let $auction := doc("auction.xml") return
+for $x in $auction/site/people/person,
+$y in $auction/site/people/person
+where $x/name = $y/name
+and not($y/address) and $x/address/country='Malaysia'
+return insert node $x/address after $y/emailaddress

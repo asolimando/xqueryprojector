@@ -1,0 +1,87 @@
+insert node if (a = b) then /persons/a else /persons/b as first into /doc/a <-- bug su a = b, malformata ma da fare detect!!
+
+for $y in let $x := for $x in /doc/a return $x/c return $x/d return $y
+	
+EVERYTHING_BELOW_USED =
+
+STRING_USED =
+
+STRING_RETURNED =
+
+NODE_USED =
+Path: /doc/a, OperationPath: null, PathType: NODE_USED
+Path: /doc/a/{FOR x}/c/{LET x}/d, OperationPath: null, PathType: NODE_RETURNED
+Path: /doc/a/{FOR x}/{LET x}/d, OperationPath: null, PathType: NODE_RETURNED
+Path: /doc/a/{FOR x}/c/{LET x}, OperationPath: null, PathType: NODE_RETURNED
+Path: /doc/a/{FOR x}/{LET x}, OperationPath: null, PathType: NODE_USED
+NODE_RETURNED =
+Path: /doc/a/{FOR x}/c/{LET x}/d/{FOR y}, OperationPath: null, PathType: NODE_RETURNED
+Path: /doc/a/{FOR x}/{LET x}/d/{FOR y}, OperationPath: null, PathType: NODE_RETURNED
+Path: /doc/a/{FOR x}/c/{LET x}/{FOR y}, OperationPath: null, PathType: NODE_RETURNED
+Path: /doc/a/{FOR x}/{LET x}/{FOR y}, OperationPath: null, PathType: NODE_USED
+
+
+
+putting false && at line 282 of file QueryPathExtractor.java:
+
+for $y in let $x := for $x in /doc/a return $x/c return $x/d return $y
+
+STRING_USED =
+
+NODE_RETURNED =
+Path: /doc/a/{FOR x}/c/{LET x}/d/{FOR y}, OperationPath: null, PathType: NODE_RETURNED
+STRING_RETURNED =
+
+EVERYTHING_BELOW_USED =
+
+NODE_USED =
+Path: /doc/a, OperationPath: null, PathType: NODE_USED
+Path: /doc/a/{FOR x}, OperationPath: null, PathType: NODE_USED
+Path: /doc/a/{FOR x}/c/{LET x}/d, OperationPath: null, PathType: NODE_RETURNED
+
+after the conversion to the internal unabbreviated representation:
+
+EVERYTHING_BELOW_USED =
+
+STRING_USED =
+
+NODE_USED =
+Path: child::doc child::a, OperationPath: null, PathType: NODE_USED
+Path: child::c, OperationPath: null, PathType: NODE_USED <-- di troppo!!
+Path: child::doc child::a {FOR x}, OperationPath: null, PathType: NODE_USED
+Path: child::doc child::a {FOR x} child::c {LET x} child::d, OperationPath: null, PathType: NODE_RETURNED
+STRING_RETURNED =
+
+NODE_RETURNED =
+Path: child::doc child::a {FOR x} child::c {LET x} child::d {FOR y}, OperationPath: null, PathType: NODE_RETURNED
+
+
+after resetting exPaths at line 728 (now coherent with the second example of this file, that is, simply correct)
+
+
+NODE_RETURNED =
+Path: child::doc child::a {FOR x} child::c {LET x} child::d {FOR y}, OperationPath: null, PathType: NODE_RETURNED
+STRING_USED =
+
+EVERYTHING_BELOW_USED =
+
+STRING_RETURNED =
+
+NODE_USED =
+Path: child::doc child::a, OperationPath: null, PathType: NODE_USED
+Path: child::doc child::a {FOR x}, OperationPath: null, PathType: NODE_USED
+Path: child::doc child::a {FOR x} child::c {LET x} child::d, OperationPath: null, PathType: NODE_RETURNED
+
+
+09/08/2011 (after implementation of the new rules)
+
+NODE_RETURNED =
+Path: / child::doc / child::a / {FOR x} / child::c / {LET x} / child::d / {FOR y}, OperationPath: null, PathType: NODE_RETURNED
+
+STRING_USED =
+EVERYTHING_BELOW_USED =
+STRING_RETURNED =
+
+NODE_USED =
+Path: / child::doc / child::a, OperationPath: null, PathType: NODE_RETURNED
+Path: / child::doc / child::a / {FOR x} / child::c / {LET x} / child::d, OperationPath: null, PathType: NODE_RETURNED

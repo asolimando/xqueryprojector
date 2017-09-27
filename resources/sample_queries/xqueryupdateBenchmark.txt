@@ -1,0 +1,197 @@
+Q1 = insert node if (/a = /b) then /persons/a else /persons/b as first into /doc/a/text()
+
+ONE_LEVEL_BELOW =
+Path: / child::doc / child::a / child::text() / parent::node(), OperationPath: null, PathType: STRING_RETURNED, RetFixed: false
+EVERYTHING_BELOW =
+Path: / child::a, OperationPath: null, PathType: NODE_RETURNED, RetFixed: false
+Path: / child::b, OperationPath: null, PathType: NODE_RETURNED, RetFixed: false
+Path: / child::persons / child::a, OperationPath: null, PathType: NODE_RETURNED, RetFixed: false
+Path: / child::persons / child::b, OperationPath: null, PathType: NODE_RETURNED, RetFixed: false
+NODE_ONLY =
+
+
+Q2 = for $x in /doc/a return delete node $x
+
+ONE_LEVEL_BELOW =
+
+EVERYTHING_BELOW =
+
+NODE_ONLY =
+Path: / child::doc / child::a, OperationPath: null, PathType: NODE_RETURNED, RetFixed: false
+Path: / child::doc / child::a / {FOR x}, OperationPath: null, PathType: NODE_RETURNED, RetFixed: false
+
+Q3 = 
+insert node <a>sometext</a> into let $auction := doc("auction.xml") return
+for $a in
+  $auction/site/closed_auctions/closed_auction/annotation/description/parlist/
+   listitem/
+   parlist/
+   listitem/
+   text/
+   emph/
+   keyword
+return $a
+
+NODE_ONLY =
+Path: doc("auction.xml") / {LET auction} / child::site / child::closed_auctions / child::closed_auction / child::annotation / child::description / child::parlist / child::listitem / child::parlist / child::listitem / child::text / child::emph / child::keyword, OperationPath: INSERT_INTO, PathType: NODE_RETURNED, RetFixed: false
+EVERYTHING_BELOW =
+
+ONE_LEVEL_BELOW =
+Path: doc("auction.xml") / {LET auction} / child::site / child::closed_auctions / child::closed_auction / child::annotation / child::description / child::parlist / child::listitem / child::parlist / child::listitem / child::text / child::emph / child::keyword / {FOR a}, OperationPath: INSERT_INTO, PathType: NODE_RETURNED, RetFixed: false
+
+Q4 = 
+if (/a=/b) then
+insert node <a>sometext</a> into let $auction := doc("auction.xml") return
+for $a in
+  $auction/site/closed_auctions/closed_auction/annotation/description/parlist/
+   listitem/
+   parlist/
+   listitem/
+   text/
+   emph/
+   keyword
+return $a
+else insert node /d as first into /doc
+
+ONE_LEVEL_BELOW =
+Path: doc("auction.xml") / {LET auction} / child::site / child::closed_auctions / child::closed_auction / child::annotation / child::description / child::parlist / child::listitem / child::parlist / child::listitem / child::text / child::emph / child::keyword / {FOR a}, OperationPath: INSERT_INTO, PathType: NODE_RETURNED, RetFixed: false
+Path: / child::doc, OperationPath: INSERT_FIRST, PathType: NODE_RETURNED, RetFixed: false
+EVERYTHING_BELOW =
+Path: / child::a, OperationPath: null, PathType: NODE_RETURNED, RetFixed: false
+Path: / child::b, OperationPath: null, PathType: NODE_RETURNED, RetFixed: false
+Path: / child::d, OperationPath: INSERT_FIRST, PathType: NODE_RETURNED, RetFixed: false
+NODE_ONLY =
+Path: doc("auction.xml") / {LET auction} / child::site / child::closed_auctions / child::closed_auction / child::annotation / child::description / child::parlist / child::listitem / child::parlist / child::listitem / child::text / child::emph / child::keyword, OperationPath: INSERT_INTO, PathType: NODE_RETURNED, RetFixed: false
+
+Q5 =
+if (/a=/b) then
+insert node <a>sometext</a> before let $auction := doc("auction.xml") return
+for $a in
+  $auction/site/closed_auctions/closed_auction/annotation/description/parlist/
+   listitem/
+   parlist/
+   listitem/
+   text/
+   emph/
+   keyword
+return $a
+else insert node /d as last into /doc
+
+ONE_LEVEL_BELOW =
+Path: doc("auction.xml") / {LET auction} / child::site / child::closed_auctions / child::closed_auction / child::annotation / child::description / child::parlist / child::listitem / child::parlist / child::listitem / child::text / child::emph / child::keyword / {FOR a} / parent::node(), OperationPath: INSERT_BEFORE, PathType: NODE_RETURNED, RetFixed: false
+Path: / child::doc, OperationPath: INSERT_LAST, PathType: NODE_RETURNED, RetFixed: false
+EVERYTHING_BELOW =
+Path: / child::a, OperationPath: null, PathType: NODE_RETURNED, RetFixed: false
+Path: / child::b, OperationPath: null, PathType: NODE_RETURNED, RetFixed: false
+Path: / child::d, OperationPath: INSERT_LAST, PathType: NODE_RETURNED, RetFixed: false
+NODE_ONLY =
+Path: doc("auction.xml") / {LET auction} / child::site / child::closed_auctions / child::closed_auction / child::annotation / child::description / child::parlist / child::listitem / child::parlist / child::listitem / child::text / child::emph / child::keyword, OperationPath: INSERT_BEFORE, PathType: NODE_RETURNED, RetFixed: false
+
+Q6 = for $x in /doc/a return insert node <a></a> after $x
+
+EVERYTHING_BELOW =
+ONE_LEVEL_BELOW =
+Path: / child::doc / child::a / {FOR x} / parent::node(), OperationPath: INSERT_AFTER, PathType: NODE_RETURNED, RetFixed: false
+NODE_ONLY =
+Path: / child::doc / child::a, OperationPath: null, PathType: NODE_RETURNED, RetFixed: false
+
+Q7 = rename node if (/a = /b) then /persons/a else /persons/b as /doc/a/text()
+
+EVERYTHING_BELOW =
+Path: / child::a, OperationPath: RENAME, PathType: NODE_RETURNED, RetFixed: false
+Path: / child::b, OperationPath: RENAME, PathType: NODE_RETURNED, RetFixed: false
+ONE_LEVEL_BELOW =
+Path: / child::doc / child::a / child::text(), OperationPath: RENAME, PathType: STRING_RETURNED, RetFixed: false
+NODE_ONLY =
+Path: / child::persons / child::a, OperationPath: RENAME, PathType: NODE_RETURNED, RetFixed: false
+Path: / child::persons / child::b, OperationPath: RENAME, PathType: NODE_RETURNED, RetFixed: false
+
+Q8 = rename node if (/a = /b) then /persons/a else /persons/b as /doc/a
+
+EVERYTHING_BELOW =
+Path: / child::a, OperationPath: RENAME, PathType: NODE_RETURNED, RetFixed: false
+Path: / child::b, OperationPath: RENAME, PathType: NODE_RETURNED, RetFixed: false
+ONE_LEVEL_BELOW =
+
+NODE_ONLY =
+Path: / child::doc / child::a, OperationPath: RENAME, PathType: NODE_RETURNED, RetFixed: false
+Path: / child::persons / child::a, OperationPath: RENAME, PathType: NODE_RETURNED, RetFixed: false
+Path: / child::persons / child::b, OperationPath: RENAME, PathType: NODE_RETURNED, RetFixed: false
+
+Q9 = replace node if (/a = /b) then /persons/a else /persons/b with /doc/a/text()
+
+NODE_ONLY =
+
+ONE_LEVEL_BELOW =
+Path: / child::doc / child::a / child::text() / parent::node(), OperationPath: REPLACE, PathType: STRING_RETURNED, RetFixed: false
+Path: / child::persons / child::a / parent::node(), OperationPath: REPLACE, PathType: NODE_RETURNED, RetFixed: false
+Path: / child::persons / child::b / parent::node(), OperationPath: REPLACE, PathType: NODE_RETURNED, RetFixed: false
+EVERYTHING_BELOW =
+Path: / child::a, OperationPath: REPLACE, PathType: NODE_RETURNED, RetFixed: false
+Path: / child::b, OperationPath: REPLACE, PathType: NODE_RETURNED, RetFixed: false
+
+Q10 = replace node if (/a = /b) then /persons/a else /persons/b with /doc/a
+
+NODE_ONLY =
+
+ONE_LEVEL_BELOW =
+Path: / child::persons / child::a / parent::node(), OperationPath: REPLACE, PathType: NODE_RETURNED, RetFixed: false
+Path: / child::persons / child::b / parent::node(), OperationPath: REPLACE, PathType: NODE_RETURNED, RetFixed: false
+EVERYTHING_BELOW =
+Path: / child::a, OperationPath: REPLACE, PathType: NODE_RETURNED, RetFixed: false
+Path: / child::b, OperationPath: REPLACE, PathType: NODE_RETURNED, RetFixed: false
+Path: / child::doc / child::a, OperationPath: REPLACE, PathType: NODE_RETURNED, RetFixed: false
+
+Q11 = for $x in /doc/a
+return (
+insert node (<e>{$x/z}</e>,<c></c>)
+before $x/d
+,
+insert node (<k></k>,<k></k>)
+after $x/c
+)
+
+EVERYTHING_BELOW =
+Path: / child::doc / child::a / {FOR x} / child::z, OperationPath: INSERT_BEFORE, PathType: NODE_RETURNED, RetFixed: false
+ONE_LEVEL_BELOW =
+Path: / child::doc / child::a / {FOR x} / child::d / parent::node(), OperationPath: INSERT_BEFORE, PathType: NODE_RETURNED, RetFixed: false
+Path: / child::doc / child::a / {FOR x} / child::c / parent::node(), OperationPath: INSERT_AFTER, PathType: NODE_RETURNED, RetFixed: false
+NODE_ONLY =
+Path: / child::doc / child::a, OperationPath: null, PathType: NODE_RETURNED, RetFixed: false
+
+Q12 = insert node if (/a = /b) 
+then /persons/a 
+else /persons/b after /doc/a/text()
+
+ONE_LEVEL_BELOW =
+Path: / child::doc / child::a / child::text() / parent::node(), OperationPath: INSERT_AFTER, PathType: STRING_RETURNED, RetFixed: false
+NODE_ONLY =
+
+EVERYTHING_BELOW =
+Path: / child::a, OperationPath: INSERT_AFTER, PathType: NODE_RETURNED, RetFixed: false
+Path: / child::b, OperationPath: INSERT_AFTER, PathType: NODE_RETURNED, RetFixed: false
+Path: / child::persons / child::a, OperationPath: INSERT_AFTER, PathType: NODE_RETURNED, RetFixed: false
+Path: / child::persons / child::b, OperationPath: INSERT_AFTER, PathType: NODE_RETURNED, RetFixed: false
+
+Q13 = insert node if (/a = /b) 
+then /persons/a 
+else /persons/b after /doc/a/b
+
+ONE_LEVEL_BELOW =
+Path: / child::doc / child::a / child::b / parent::node(), OperationPath: INSERT_AFTER, PathType: NODE_RETURNED, RetFixed: false
+NODE_ONLY =
+
+EVERYTHING_BELOW =
+Path: / child::a, OperationPath: INSERT_AFTER, PathType: NODE_RETURNED, RetFixed: false
+Path: / child::b, OperationPath: INSERT_AFTER, PathType: NODE_RETURNED, RetFixed: false
+Path: / child::persons / child::a, OperationPath: INSERT_AFTER, PathType: NODE_RETURNED, RetFixed: false
+Path: / child::persons / child::b, OperationPath: INSERT_AFTER, PathType: NODE_RETURNED, RetFixed: false
+
+Q14 = delete node /doc/a/b/text()
+
+NODE_ONLY =
+
+EVERYTHING_BELOW =
+
+ONE_LEVEL_BELOW =
+Path: / child::doc / child::a / child::b / child::text() / parent::node(), OperationPath: DELETE, PathType: STRING_RETURNED, RetFixed: false

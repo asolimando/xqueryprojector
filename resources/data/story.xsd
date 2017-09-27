@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+  DTD to write simple stories
+  Made by Daniel K. Schneider / TECFA / University of Geneva
+  VERSION 1.0
+  30/10/2003
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <xs:import namespace="http://www.w3.org/1999/xlink" schemaLocation="xlink.xsd"/>
+  <xs:element name="STORY">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="title"/>
+        <xs:element ref="context"/>
+        <xs:element ref="problem"/>
+        <xs:element ref="goal"/>
+        <xs:element ref="THREADS"/>
+        <xs:element ref="moral"/>
+        <xs:element ref="INFOS"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="THREADS">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="EPISODE"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="EPISODE">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="subgoal"/>
+        <xs:element maxOccurs="unbounded" ref="ATTEMPT"/>
+        <xs:element ref="result"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ATTEMPT">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element ref="action"/>
+        <xs:element ref="EPISODE"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="INFOS">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="date"/>
+        <xs:element ref="author"/>
+        <xs:element ref="a"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="title" type="xs:string"/>
+  <xs:element name="context" type="xs:string"/>
+  <xs:element name="problem" type="xs:string"/>
+  <xs:element name="goal" type="xs:string"/>
+  <xs:element name="subgoal" type="xs:string"/>
+  <xs:element name="result" type="xs:string"/>
+  <xs:element name="moral" type="xs:string"/>
+  <xs:element name="action" type="xs:string"/>
+  <xs:element name="date" type="xs:string"/>
+  <xs:element name="author" type="xs:string"/>
+  <xs:element name="a">
+    <xs:complexType mixed="true">
+      <xs:attribute ref="xlink:href" use="required"/>
+      <xs:attribute ref="xlink:type" default="simple"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

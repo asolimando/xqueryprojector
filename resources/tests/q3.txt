@@ -1,0 +1,2 @@
+let $auction := doc("auction.xml") return
+delete nodes $auction/site/regions//item/mailbox/mail

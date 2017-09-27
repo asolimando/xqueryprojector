@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<functions>
+	<function name="doc" num_param="1">
+		<parameter fixed_return="false">
+			<modifier>NONE</modifier>
+		</parameter>
+	</function>
+	<function name="count" num_param="1">
+		<parameter fixed_return="false">
+			<modifier>NONE</modifier>
+		</parameter>
+	</function>
+	<function name="position" num_param="1">
+		<parameter fixed_return="false">
+			<modifier>NONE</modifier>
+		</parameter>
+	</function>
+	<function name="string" num_param="1">
+		<parameter fixed_return="false">
+			<modifier>NONE</modifier>
+		</parameter>
+	</function>
+	<function name="number" num_param="1">
+		<parameter fixed_return="false">
+			<modifier>NONE</modifier>
+		</parameter>
+	</function>
+	<function name="data" num_param="1">
+		<parameter fixed_return="true">
+			<modifier>NONE</modifier>
+		</parameter>
+	</function>
+	<function name="zero-or-one" num_param="1">
+		<parameter fixed_return="false">
+			<modifier>NONE</modifier>
+		</parameter>
+	</function>
+	<function name="distinct-values" num_param="1">
+		<parameter fixed_return="false">
+			<modifier>NONE</modifier>
+		</parameter>
+	</function>
+	<function name="exactly-one" num_param="1">
+		<parameter fixed_return="false">
+			<modifier>NONE</modifier>
+		</parameter>
+	</function>
+	<function name="empty" num_param="1">
+		<parameter fixed_return="false">
+			<modifier>NONE</modifier>
+		</parameter>
+	</function>
+	<function name="contains" num_param="2">
+		<parameter fixed_return="true">
+			<modifier>NONE</modifier>
+		</parameter>
+		<parameter fixed_return="true">
+			<modifier>NONE</modifier>
+		</parameter>
+	</function>	
+	<function name="name" num_param="1">
+		<parameter fixed_return="false">
+			<modifier>OPTIONAL</modifier>
+		</parameter>
+	</function>
+</functions>

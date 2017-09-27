@@ -1,0 +1,11 @@
+let $auction := doc("auction.xml") return
+for $x in $auction/site/people/person/address
+where $x/country/text()="United States" return
+(replace node $x with
+<address>
+	<street>{$x/street/text()}</street>
+	<city>"NewYork"</city>
+	<country>"USA"</country>
+	<province>{$x/province/text()}</province>
+	<zipcode>{$x/zipcode/text()}</zipcode>
+</address>)

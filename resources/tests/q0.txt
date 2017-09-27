@@ -1,0 +1,5 @@
+let $auction := doc("auction.xml") return
+for $x in $auction/site/closed_auctions/closed_auction
+where not($x/annotation) return
+insert node <annotation>Empty Annotation</annotation>
+as last into $x

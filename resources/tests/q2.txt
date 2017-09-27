@@ -1,0 +1,4 @@
+let $auction := doc("auction.xml") return
+for $x in $auction/site/regions//item/location
+where $x/text()="United States"
+return (replace value of node $x with "USA")

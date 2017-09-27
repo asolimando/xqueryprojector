@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <!ELEMENT employees (Efirstname, Elastname, Etitle, Ephone, Eemail)>
+         <!ELEMENT Efirstname (#PCDATA)>
+         <!ELEMENT Elastname (#PCDATA)>
+         <!ELEMENT Etitle (#PCDATA)>
+         <!ELEMENT Ephone (#PCDATA)>
+         <!ELEMENT Eemail (#PCDATA)>

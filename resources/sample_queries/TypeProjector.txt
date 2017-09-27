@@ -1,0 +1,169 @@
+auctions.xsd
+1)
+doc("auctions.xml") / child::site / child::open_auctions / descendant::happiness
+2)
+doc("auctions.xml") / child::site / child::open_auctions / descendant::happiness / ancestor::open_auction / descendant::description
+3)
+doc("auctions.xml") / child::site / child::open_auctions / preceding::happiness
+4)
+doc("auctions.xml") / child::site / child::open_auctions / ancestor-or-self::site
+5)
+doc("auctions.xml") / child::site / descendant::item / descendant::node()
+6)
+doc("auctions.xml") / child::site / descendant::samerica/ following-sibling::node()
+7)
+doc("auctions.xml") / child::site / descendant::watch / child::* <-- ok, it has the attribute
+8)
+doc("auctions.xml") / child::site / descendant::watch / child::node() <-- ok, it is empty
+9)
+doc("auctions.xml") / child::site / descendant::item / attribute::featured / ancestor::africa / descendant::location / self::node()
+10)
+doc("auctions.xml") / child::site / descendant::item / attribute::featured
+11)
+doc("auctions.xml") / child::site / descendant::person / descendant::node()
+12)
+doc("auctions.xml") / child::site / descendant::person / preceding-sibling::node() <-- ok, overapproximation
+13)
+doc("auctions.xml") / child::site / descendant::samerica / preceding::mail / preceding-sibling::node() <-- ok, overapproximation
+14)
+doc("auction.xml") /descendant::europe / parent::node() / child::samerica
+15)
+doc("auction.xml") /descendant::europe / parent::node() / child::node() / child::item
+16)
+doc("auction.xml") /descendant::europe / parent::node() / child::node() / child::current
+17)
+doc("auction.xml") /descendant::europe / parent::node() / child::node() / child::item / ancestor::asia
+18)
+doc("auction.xml") /descendant::europe / parent::node() / child::node() / child::item / ancestor::asia / descendant::location / ancestor-or-self::node() / preceding-sibling::node() / descendant-or-self::description
+19)
+doc("auction.xml") /descendant::europe / parent::node() / child::node() / child::item / ancestor::asia / preceding::namerica
+
+UPDATE:
+U1)
+let $auction := doc("auction.xml") return
+for $x in $auction/site/closed_auctions/closed_auction
+where not($x/annotation) return
+insert node <annotation>Empty Annotation</annotation>
+as last into $x
+
+Type projector =
+ONE_LEVEL_BELOW = { closed_auction }
+NODE_ONLY = { site closed_auctions annotation }
+EVERYTHING_BELOW = { }
+
+Post-optimization:IDEM
+
+U2)
+let $auction := doc("auction.xml") return
+for $x in $auction/site/people/person/address
+where $x/country/text()="United States" return
+(replace node $x with
+<address>
+	<street>{$x/street/text()}</street>
+	<city>"NewYork"</city>
+	<country>"USA"</country>
+	<province>{$x/province/text()}</province>
+	<zipcode>{$x/zipcode/text()}</zipcode>
+</address>)
+
+Type projector =
+ONE_LEVEL_BELOW = { country street province zipcode person }
+NODE_ONLY = { address site people }
+EVERYTHING_BELOW = { }
+
+Post-optimization:
+Type projector =
+NODE_ONLY = { site people }
+ONE_LEVEL_BELOW = { country street province zipcode person }
+EVERYTHING_BELOW = { }
+
+U3)
+let $auction := doc("auction.xml") return
+for $x in $auction/site/regions//item/location
+where $x/text()="United States"
+return (replace value of node $x with "USA")
+
+Type projector =
+ONE_LEVEL_BELOW = { location item }
+NODE_ONLY = { site regions namerica australia europe asia africa samerica }
+EVERYTHING_BELOW = { }
+
+Post-optimization: IDEM
+
+U4)
+let $auction := doc("auction.xml") return
+delete nodes $auction/site/regions//item/mailbox/mail
+
+Type projector =
+ONE_LEVEL_BELOW = { }
+NODE_ONLY = { site regions namerica australia europe asia africa samerica item mailbox mail }
+EVERYTHING_BELOW = { }
+
+Post-optimization: IDEM
+
+U5)
+let $auction := doc("auction.xml") return
+for $x in $auction/site//text/bold return
+rename node $x as "emph"
+
+Type projector =
+ONE_LEVEL_BELOW = { }
+NODE_ONLY = { bold site closed_auctions closed_auction open_auctions open_auction annotation categories category regions 
+namerica australia europe asia africa samerica item description listitem parlist mailbox mail text }
+EVERYTHING_BELOW = { }
+
+
+Post-optimization: IDEM
+
+U6)
+let $auction := doc("auction.xml") return
+for $x in $auction/site/people/person
+where not($x/homepage)
+return insert node
+<homepage>www.{$x/name/text()}Page.com</homepage>
+after $x/emailaddress
+
+Type projector =
+ONE_LEVEL_BELOW = { name person }
+NODE_ONLY = { site people emailaddress homepage }
+EVERYTHING_BELOW = { }
+
+Post-optimization:
+Type projector =
+NODE_ONLY = { site people }
+ONE_LEVEL_BELOW = { name person }
+EVERYTHING_BELOW = { }
+
+U7) originally = "and $x/country='Malaysia'"
+let $auction := doc("auction.xml") return
+for $x in $auction/site/people/person,
+$y in $auction/site/people/person
+where $x/name = $y/name
+and not($y/address) and $x/address/country='Malaysia'
+return insert node $x/address after $y/emailaddress
+
+Type projector =
+ONE_LEVEL_BELOW = { person }
+NODE_ONLY = { people site emailaddress }
+EVERYTHING_BELOW = { name country address }
+
+Post-optimization:
+Type projector =
+ONE_LEVEL_BELOW = { person }
+NODE_ONLY = { site people }
+EVERYTHING_BELOW = { name country address }
+
+Projectors for all the updates together:
+
+Type projector =
+ONE_LEVEL_BELOW = { closed_auction street province zipcode person location item }
+NODE_ONLY = { site closed_auctions annotation people regions namerica australia europe asia africa samerica mailbox mail bold 
+open_auctions open_auction categories category description listitem parlist text emailaddress homepage }
+EVERYTHING_BELOW = { name country address }
+
+Post-optimization:
+NODE_ONLY = { site closed_auctions annotation people regions namerica australia europe asia africa samerica mailbox mail bold 
+open_auctions open_auction categories category description listitem parlist text }
+ONE_LEVEL_BELOW = { closed_auction street province zipcode person location item }
+EVERYTHING_BELOW = { name country address }
+

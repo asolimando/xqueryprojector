@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- DTD for auction database -->
+<!-- $Id: auction.dtd,v 1.15 2001/01/29 21:42:35 albrecht Exp $ -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="site">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="regions"/>
+        <xs:element ref="categories"/>
+        <xs:element ref="catgraph"/>
+        <xs:element ref="people"/>
+        <xs:element ref="open_auctions"/>
+        <xs:element ref="closed_auctions"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="categories">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="category"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="category">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="name"/>
+        <xs:element ref="description"/>
+      </xs:sequence>
+      <xs:attribute name="id" use="required" type="xs:ID"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="name" type="xs:string"/>
+  <xs:element name="description">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element ref="text"/>
+        <xs:element ref="parlist"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="text">
+    <xs:complexType mixed="true">
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="bold"/>
+        <xs:element ref="keyword"/>
+        <xs:element ref="emph"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="bold">
+    <xs:complexType mixed="true">
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="bold"/>
+        <xs:element ref="keyword"/>
+        <xs:element ref="emph"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="keyword">
+    <xs:complexType mixed="true">
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="bold"/>
+        <xs:element ref="keyword"/>
+        <xs:element ref="emph"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="emph">
+    <xs:complexType mixed="true">
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="bold"/>
+        <xs:element ref="keyword"/>
+        <xs:element ref="emph"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="parlist">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="listitem"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="listitem">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="text"/>
+        <xs:element ref="parlist"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="catgraph">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="edge"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="edge">
+    <xs:complexType>
+      <xs:attribute name="from" use="required" type="xs:IDREF"/>
+      <xs:attribute name="to" use="required" type="xs:IDREF"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="regions">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="africa"/>
+        <xs:element ref="asia"/>
+        <xs:element ref="australia"/>
+        <xs:element ref="europe"/>
+        <xs:element ref="namerica"/>
+        <xs:element ref="samerica"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="africa">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="item"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="asia">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="item"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="australia">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="item"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="namerica">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="item"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="samerica">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="item"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="europe">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="item"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="item">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="location"/>
+        <xs:element ref="quantity"/>
+        <xs:element ref="name"/>
+        <xs:element ref="payment"/>
+        <xs:element ref="description"/>
+        <xs:element ref="shipping"/>
+        <xs:element maxOccurs="unbounded" ref="incategory"/>
+        <xs:element ref="mailbox"/>
+      </xs:sequence>
+      <xs:attribute name="id" use="required" type="xs:ID"/>
+      <xs:attribute name="featured"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="location" type="xs:string"/>
+  <xs:element name="quantity" type="xs:string"/>
+  <xs:element name="payment" type="xs:string"/>
+  <xs:element name="shipping" type="xs:string"/>
+  <xs:element name="reserve" type="xs:string"/>
+  <xs:element name="incategory">
+    <xs:complexType>
+      <xs:attribute name="category" use="required" type="xs:IDREF"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="mailbox">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="mail"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="mail">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="from"/>
+        <xs:element ref="to"/>
+        <xs:element ref="date"/>
+        <xs:element ref="text"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="from" type="xs:string"/>
+  <xs:element name="to" type="xs:string"/>
+  <xs:element name="date" type="xs:string"/>
+  <xs:element name="itemref">
+    <xs:complexType>
+      <xs:attribute name="item" use="required" type="xs:IDREF"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="personref">
+    <xs:complexType>
+      <xs:attribute name="person" use="required" type="xs:IDREF"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="people">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="person"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="person">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="name"/>
+        <xs:element ref="emailaddress"/>
+        <xs:element minOccurs="0" ref="phone"/>
+        <xs:element minOccurs="0" ref="address"/>
+        <xs:element minOccurs="0" ref="homepage"/>
+        <xs:element minOccurs="0" ref="creditcard"/>
+        <xs:element minOccurs="0" ref="profile"/>
+        <xs:element minOccurs="0" ref="watches"/>
+      </xs:sequence>
+      <xs:attribute name="id" use="required" type="xs:ID"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="emailaddress" type="xs:string"/>
+  <xs:element name="phone" type="xs:string"/>
+  <xs:element name="address">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="street"/>
+        <xs:element ref="city"/>
+        <xs:element ref="country"/>
+        <xs:element minOccurs="0" ref="province"/>
+        <xs:element ref="zipcode"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="street" type="xs:string"/>
+  <xs:element name="city" type="xs:string"/>
+  <xs:element name="province" type="xs:string"/>
+  <xs:element name="zipcode" type="xs:string"/>
+  <xs:element name="country" type="xs:string"/>
+  <xs:element name="homepage" type="xs:string"/>
+  <xs:element name="creditcard" type="xs:string"/>
+  <xs:element name="profile">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="interest"/>
+        <xs:element minOccurs="0" ref="education"/>
+        <xs:element minOccurs="0" ref="gender"/>
+        <xs:element ref="business"/>
+        <xs:element minOccurs="0" ref="age"/>
+      </xs:sequence>
+      <xs:attribute name="income"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="interest">
+    <xs:complexType>
+      <xs:attribute name="category" use="required" type="xs:IDREF"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="education" type="xs:string"/>
+  <xs:element name="income" type="xs:string"/>
+  <xs:element name="gender" type="xs:string"/>
+  <xs:element name="business" type="xs:string"/>
+  <xs:element name="age" type="xs:string"/>
+  <xs:element name="watches">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="watch"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="watch">
+    <xs:complexType>
+      <xs:attribute name="open_auction" use="required" type="xs:IDREF"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="open_auctions">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="open_auction"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="open_auction">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="initial"/>
+        <xs:element minOccurs="0" ref="reserve"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="bidder"/>
+        <xs:element ref="current"/>
+        <xs:element minOccurs="0" ref="privacy"/>
+        <xs:element ref="itemref"/>
+        <xs:element ref="seller"/>
+        <xs:element ref="annotation"/>
+        <xs:element ref="quantity"/>
+        <xs:element ref="type"/>
+        <xs:element ref="interval"/>
+      </xs:sequence>
+      <xs:attribute name="id" use="required" type="xs:ID"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="privacy" type="xs:string"/>
+  <xs:element name="initial" type="xs:string"/>
+  <xs:element name="bidder">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="date"/>
+        <xs:element ref="time"/>
+        <xs:element ref="personref"/>
+        <xs:element ref="increase"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="seller">
+    <xs:complexType>
+      <xs:attribute name="person" use="required" type="xs:IDREF"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="current" type="xs:string"/>
+  <xs:element name="increase" type="xs:string"/>
+  <xs:element name="type" type="xs:string"/>
+  <xs:element name="interval">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="start"/>
+        <xs:element ref="end"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="start" type="xs:string"/>
+  <xs:element name="end" type="xs:string"/>
+  <xs:element name="time" type="xs:string"/>
+  <xs:element name="status" type="xs:string"/>
+  <xs:element name="amount" type="xs:string"/>
+  <xs:element name="closed_auctions">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="closed_auction"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="closed_auction">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="seller"/>
+        <xs:element ref="buyer"/>
+        <xs:element ref="itemref"/>
+        <xs:element ref="price"/>
+        <xs:element ref="date"/>
+        <xs:element ref="quantity"/>
+        <xs:element ref="type"/>
+        <xs:element minOccurs="0" ref="annotation"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="buyer">
+    <xs:complexType>
+      <xs:attribute name="person" use="required" type="xs:IDREF"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="price" type="xs:string"/>
+  <xs:element name="annotation">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="author"/>
+        <xs:element minOccurs="0" ref="description"/>
+        <xs:element ref="happiness"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="author">
+    <xs:complexType>
+      <xs:attribute name="person" use="required" type="xs:IDREF"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="happiness" type="xs:string"/>
+</xs:schema>

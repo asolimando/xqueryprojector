@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<STORY>
+  <title></title>
+  <context></context>
+  <problem></problem>
+  <goal></goal>
+  <THREADS>
+    <EPISODE>
+      <subgoal></subgoal>
+      <ATTEMPT>
+	<!-- one of (EPISODE action) -->
+      </ATTEMPT>
+      <result></result>
+    </EPISODE>
+  </THREADS>
+  <moral></moral>
+  <INFOS>
+  </INFOS>
+</STORY>

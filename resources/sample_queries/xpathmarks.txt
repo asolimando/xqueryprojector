@@ -1,0 +1,292 @@
+Q1 All the items <- OK
+
+/site/regions/*/item
+
+doc("auction.xml") / descendant::site / child::regions / child::*/ child::item
+
+let $auction := doc("auction.xml") return $auction/site/regions/*/item
+
+
+
+Q2 The keywords in annotations of closed auctions <- OK
+
+/site/closed_auctions/closed_auction/annotation/
+description/parlist/listitem/text/keyword
+
+doc("auction.xml") / child::site / child::closed_auctions / child::closed_auction / child::annotation / 
+child::description / child::parlist / child::listitem / child::text  / child::keyword
+
+let $auction := doc("auction.xml") return $auction/site/closed_auctions/closed_auction/annotation/
+description/parlist/listitem/text/keyword
+
+
+Q3 All the keywords <- OK (it is ok to mark also bold and emph because they are valid paths from the root to keyword)
+
+//keyword
+
+doc("auction.xml") / descendant::keyword
+
+let $auction := doc("auction.xml") return $auction//keyword
+
+
+Q4 The keywords in a paragraph item <- OK (it is ok to mark also bold and emph because they are valid paths from the root to keyword)
+
+/descendant-or-self::listitem/descendant-or-self::keyword
+
+doc("auction.xml") /descendant-or-self::listitem / descendant-or-self::keyword
+
+let $auction := doc("auction.xml") return $auction/descendant-or-self::listitem/descendant-or-self::keyword
+
+
+Q5 The (either North or South) American items <- OK
+
+/site/regions/*/item[parent::namerica or parent::samerica]
+
+doc("auction.xml") / child::site / child::regions / child::* / child::item / parent::namerica
+doc("auction.xml") / child::site / child::regions / child::* / child::item / parent::samerica
+doc("auction.xml") / child::site / child::regions / child::* / child::item
+
+let $auction := doc("auction.xml") return $auction/site/regions/*/item[parent::namerica or parent::samerica]
+
+
+Q6 The paragraph items containing a keyword <- OK
+
+//keyword/ancestor::listitem
+
+doc("auction.xml") / descendant::keyword / ancestor::listitem
+
+let $auction := doc("auction.xml") return $auction//keyword/ancestor::listitem
+
+
+Q7 The mails containing a keyword <-- OK
+
+//keyword/ancestor-or-self::mail
+
+doc("auction.xml") / descendant::keyword / ancestor-or-self::mail
+
+let $auction := doc("auction.xml") return $auction//keyword/ancestor-or-self::mail
+
+
+
+Q8 The open auctions in which a certain person issued a bid before another <-- OK
+person
+
+/site/open_auctions/open_auction[bidder[personref/@person=
+'person0']/following-sibling::bidder[personref/@person='person1']]
+
+doc("auction.xml") / child::site / child::open_auctions / child::open_auction / child::bidder / following-sibling::bidder
+doc("auction.xml") / child::site / child::open_auctions / child::open_auction
+
+let $auction := doc("auction.xml") return $auction/site/open_auctions/open_auction[bidder[personref/@person=
+'person0']/following-sibling::bidder[personref/@person='person1']]
+
+
+
+Q9 The past bidders of a given open auction <-- OK
+
+/site/open_auctions/open_auction[@id='open auction0']
+/bidder/preceding-sibling::bidder
+
+doc("auction.xml") / child::site / child::open_auctions / child::open_auction / attribute::id
+doc("auction.xml") / child::site / child::open_auctions / child::open_auction / child::bidder / preceding-sibling::bidder
+
+let $auction := doc("auction.xml") return $auction/site/open_auctions/open_auction[@id='open auction0']
+/bidder/preceding-sibling::bidder
+
+
+Q10 The items that follow, in document order, a given item <-- OK
+
+/site/regions/*/item[@id='item0']/following::item
+
+doc("auction.xml") / child::site / child::regions / child::* / child::item / following::item
+doc("auction.xml") / child::site / child::regions / child::* / child::item / attribute::id
+
+let $auction := doc("auction.xml") return $auction/site/regions/*/item[@id='item0']/following::item
+
+
+
+Q11 The bids issued by a certain person that precedes, in document order, the <-- OK
+last bid in document order of another person
+
+/site/open_auctions/open_auction/bidder[personref/
+@person='person1']/preceding::bidder[personref/@person='person0']
+
+doc("auction.xml") / child::site / child::open_auctions / child::open_auction / child::bidder / preceding::bidder
+doc("auction.xml") / child::site / child::open_auctions / child::open_auction / child::bidder / child::personref / attribute::person
+doc("auction.xml") / child::site / child::open_auctions / child::open_auction / child::bidder / preceding::bidder / child::personref / attribute::person
+
+let $auction := doc("auction.xml") return $auction/site/open_auctions/open_auction/bidder[personref/
+@person='person1']/preceding::bidder[personref/@person='person0']
+
+
+
+Q18 The children nodes of the root that are comments <-- comment() not supported yet
+
+/comment()
+
+let $auction := doc("auction.xml") return $auction/comment()
+
+
+
+Q21 The text nodes that are contained in the keywords of the description element <- OK
+of a given item
+
+/site/regions/*/item[@id='item0']/description//keyword/text()
+
+doc("auction.xml") / child::site / child::regions / child::* / child::item / child::description / descendant::keyword / child::text()
+doc("auction.xml") / child::site / child::regions / child::* / child::item / attribute::id
+
+let $auction := doc("auction.xml") return $auction/site/regions/*/item[@id='item0']/description//keyword/text()
+
+
+
+Q22 The (either North or South) American items <-- OK
+
+/site/regions/namerica/item/site/regions/samerica/item
+
+doc("auction.xml") / child::site / child::regions / child::namerica / child::item
+
+let $auction := doc("auction.xml") return $auction/site/regions/namerica/item | $auction/site/regions/samerica/item
+
+
+
+Q23 People having an address and either a phone or a homepage <-- OK
+
+/site/people/person[address and (phone or homepage)]
+
+doc("auction.xml") / child::site / child::people / child::person / child::address
+doc("auction.xml") / child::site / child::people / child::person / child::phone
+doc("auction.xml") / child::site / child::people / child::person / child::homepage
+
+let $auction := doc("auction.xml") return $auction/site/people/person[address and (phone or homepage)]
+
+
+
+Q24 People having no homepage
+
+/site/people/person[not(homepage)]
+
+doc("auction.xml") / child::site / child::people / child::person
+doc("auction.xml") / child::site / child::people / child::person / child::homepage
+
+let $auction := doc("auction.xml") return $auction/site/people/person[not(homepage)]
+
+
+
+Q25 The name of a given person <-- NO
+
+id('person0')/name
+
+let $auction := doc("auction.xml") return id('person0')/name
+
+
+
+Q26 The open auctions that a given person is watching <-- OK
+
+id(/site/people/person[@id='person1']/watches/watch/@open_auction)
+
+doc("auction.xml") / child::site / child::people / child::person / attribute::id
+doc("auction.xml") / child::site / child::people / child::person / child::watches / child::watch / attribute::open_auction
+
+let $auction := doc("auction.xml") return id($auction/site/people/person[@id='person1']/watches/watch/@open_auction)
+
+
+
+Q27 The sellers of the open auctions that a given person is watching <-- OK
+
+id(id(/site/people/person[@id='person1']
+/watches/watch/@open_auction)/seller/@person)
+
+doc("auction.xml") / child::site / child::people / child::person / child::watches / child::watch / attribute::open_auction
+doc("auction.xml") / descendant::node() / child::seller / attribute::person
+doc("auction.xml") / child::site / child::people / child::person / attribute::id
+
+let $auction := doc("auction.xml") return $auction/id(id(site/people/person[@id='person1']
+/watches/watch/@open_auction)/seller/@person)
+
+
+
+Q28 The American items bought by a given person <-- OK
+
+id(/site/closed_auctions/closed_auction[buyer/@person='person4']
+/itemref/@item)[parent::namerica or parent::samerica]
+
+doc("auction.xml") / child::site / child::closed_auctions / child::closed_auction / child::itemref / attribute::item
+doc("auction.xml") / descendant::node() / parent::namerica
+doc("auction.xml") / descendant::node() / parent::samerica
+doc("auction.xml") / child::site / child::closed_auctions / child::closed_auction / child::buyer / attribute::person
+
+let $auction := doc("auction.xml") return $auction/id(site/closed_auctions/closed_auction[buyer/@person='person4']
+/itemref/@item)[parent::namerica or parent::samerica]
+
+
+
+Q29 The items sold by Alassane Hogan <-- OK
+
+id(/site/closed_auctions/closed auction
+[id(seller/@person)/name='Alassane Hogan']/itemref/@item)
+
+doc("auction.xml") / child::site / child::closed_auctions / child::closed_auction / child::itemref / attribute::item
+doc("auction.xml") / child::site / child::closed_auctions / child::closed_auction / child::seller / attribute::person
+doc("auction.xml") / child::site / child::closed_auctions / child::closed_auction / descendant::node() / child::name
+
+let $auction := doc("auction.xml") return $auction/id(site/closed_auctions/closed_auction
+[id(seller/@person)/name='Alassane Hogan']/itemref/@item)
+
+
+
+Q30 The initial and last bidder of all open auctions <-- OK
+
+/site/open_auctions/open_auction
+/bidder[position()=1 and position()=last()]
+
+doc("auction.xml") / child::site / child::open_auctions / child::open_auction / child::bidder
+
+let $auction := doc("auction.xml") return $auction/site/open_auctions/open_auction
+/bidder[position()=1 and position()=last()]
+
+
+
+Q31 The open auctions having more than 5 bidders <-- OK
+
+/site/open_auctions/open_auction[count(bidder)>5]
+
+doc("auction.xml") / child::site / child::open_auctions / child::open_auction
+doc("auction.xml") / child::site / child::open_auctions / child::open_auction / child::bidder
+
+let $auction := doc("auction.xml") return $auction/site/open_auctions/open_auction[count(bidder)>5]
+
+
+
+Q36 The items whose description contains the word 'gold' <-- OK
+
+/site/regions/*/item[contains(description,'gold')]
+
+doc("auction.xml") / child::site / child::regions / child::* / child::item
+doc("auction.xml") / child::site / child::regions / child::* / child::item / child::description
+
+let $auction := doc("auction.xml") return $auction/site/regions/*/item[contains(description,'gold')]
+
+
+
+Q39 Mails sent in September <-- OK
+
+/site/regions/*/item/mailbox/mail
+[substring-before(substring-after(date,'/'),'/')='09']
+
+doc("auction.xml") / child::site / child::regions / child::* / child::item / child::mailbox / child::mail
+doc("auction.xml") / child::site / child::regions / child::* / child::item / child::mailbox / child::mail / child::date
+
+let $auction := doc("auction.xml") return $auction/site/regions/*/item/mailbox/mail
+[substring-before(substring-after(date,'/'),'/')='09']
+
+
+
+Q44 Open auctions with a total increase greater or equal to 70 <-- OK
+
+/site/open_auctions/open_auction[floor(sum(bidder/increase))>=70]
+
+doc("auction.xml") / child::site / child::open_auctions / child::open_auction / child::bidder / child::increase
+doc("auction.xml") / child::site / child::open_auctions / child::open_auction
+
+let $auction := doc("auction.xml") return $auction/site/open_auctions/open_auction[floor(sum(bidder/increase))>=70]
